@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-#include <AllPurchases.h>
+#include "AllPurchases.h"
 using namespace std;
 
 AllPurchases::AllPurchases(string inputLine) {
@@ -23,7 +23,7 @@ void AllPurchases::printPurchase() {
 int AllPurchases::getAccountNumber() {return accountNumber;}
 
 // Setters
-void AllPurchases::setItem(string item) {this->item = item;}
-void AllPurchases::setDate(string date) {this->date = date;}
-void AllPurchases::setAccountNumber(int accountNumber) {this->accountNumber = accountNumber;}
-void AllPurchases::setAmmount(double ammount) {this->ammount = ammount;}
+void AllPurchases::setItem(string item) { this->item = item; }
+void AllPurchases::setDate(string date) { this->date = date; }
+void AllPurchases::setAccountNumber(int accountNumber) { this->accountNumber = accountNumber; }
+void AllPurchases::setAmmount(double ammount) { this->ammount = ammount; }
