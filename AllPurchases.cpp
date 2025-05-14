@@ -12,7 +12,7 @@ AllPurchases::AllPurchases(string inputLine) {
     ss >> accountNumber >> item >> date >> ammount;
 }
 
-void AllPurchases::printPurchase() {
+void AllPurchases::printPurchase() const {
     cout << left << setw(12) << date
         << setw(30) << item
         << "$" << setw(9) << fixed << setprecision(2) << ammount
@@ -20,7 +20,10 @@ void AllPurchases::printPurchase() {
 }
 
 // Getters
-int AllPurchases::getAccountNumber() {return accountNumber;}
+int AllPurchases::getAccountNumber() const { return accountNumber; }
+std::string AllPurchases::getItem() const { return item; }
+std::string AllPurchases::getDate() const { return date; }
+double AllPurchases::getAmmount() const { return ammount; }
 
 // Setters
 void AllPurchases::setItem(string item) { this->item = item; }
