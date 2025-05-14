@@ -83,6 +83,7 @@ void sortAndPrintCustomers(const map<int, AllCustomers>& customerList,
     }
 }
 
+// Function to read an integer in specific range
 int readIntInRange(const string& prompt, int min, int max) {
     while (true) {
         cout << prompt;
