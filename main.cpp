@@ -108,29 +108,68 @@ void addCustomersRecursive(int count, map<int, AllCustomers>& customerList) {
     AllCustomers newCust;
     string s;
     // First name (no spaces)
-    do {
-        cout << "First name: ";
-        getline(cin, s);
-        if (s.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed.\n";
-    } while (s.find(' ') != string::npos);
+    {
+        string tmp;
+        do {
+            cout << "First name: ";
+            getline(cin, tmp);
+            bool hasSpace = tmp.find(' ') != string::npos;
+            bool empty = tmp.empty();
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (empty)
+                cout << "First name cannot be empty.\n";
+            else if (hasSpace)
+                cout << "Invalid input: spaces not allowed.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        s = tmp;
+    }
     newCust.setFirstName(s);
     // Last name (no spaces)
-    do {
-        cout << "Last name: ";
-        getline(cin, s);
-        if (s.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed.\n";
-    } while (s.find(' ') != string::npos);
+    {
+        string tmp;
+        do {
+            cout << "Last name: ";
+            getline(cin, tmp);
+            bool hasSpace = tmp.find(' ') != string::npos;
+            bool empty = tmp.empty();
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (empty)
+                cout << "Last name cannot be empty.\n";
+            else if (hasSpace)
+                cout << "Invalid input: spaces not allowed.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        s = tmp;
+    }
     newCust.setLastName(s);
     // Street address (use - for spaces; no literal spaces allowed)
-    do {
-        cout << "Street address (use - for spaces): ";
-        getline(cin, s);
-        if (s.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-    } while (s.find(' ') != string::npos);
-    newCust.setStreetAddress(s);
+    {
+        string tmp;
+        do {
+            cout << "Street address: ";
+            getline(cin, tmp);
+            bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (onlySpaces)
+                cout << "Street address cannot be empty.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        s = tmp;
+        newCust.setStreetAddress(s);
+    }
     // Zip Code (5 digits)
     string zipStr;
     regex zipRx(R"(^[0-9]{5}$)");
@@ -148,22 +187,44 @@ void addCustomersRecursive(int count, map<int, AllCustomers>& customerList) {
         if (!regex_match(phone, phoneRx)) cout << "Invalid phone format. ";
     } while (!regex_match(phone, phoneRx));
     newCust.setPhoneNumber(phone);
-    // City (use - for spaces; no literal spaces allowed)
-    do {
-        cout << "City (use - for spaces): ";
-        getline(cin, s);
-        if (s.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-    } while (s.find(' ') != string::npos);
-    newCust.setCity(s);
-    // State (use - for spaces; no literal spaces allowed)
-    do {
-        cout << "State (use - for spaces): ";
-        getline(cin, s);
-        if (s.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-    } while (s.find(' ') != string::npos);
-    newCust.setState(s);
+
+    {
+        string tmp;
+        do {
+            cout << "City: ";
+            getline(cin, tmp);
+            bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (onlySpaces)
+                cout << "City cannot be empty.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        s = tmp;
+        newCust.setCity(s);
+    }
+
+    {
+        string tmp;
+        do {
+            cout << "State: ";
+            getline(cin, tmp);
+            bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (onlySpaces)
+                cout << "State cannot be empty.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        s = tmp;
+        newCust.setState(s);
+    }
     // Generate unique account number
     int acct;
     do { acct = acctDist(acctRng); } while (customerList.count(acct));
@@ -183,13 +244,23 @@ void addPurchasesRecursive(int count, AllCustomers& cust) {
         if (!isValidDate(date)) cout << "Invalid date. Please enter a valid date (m/d/YY).\n";
     } while (!isValidDate(date));
     string item;
-    // Item (no spaces)
-    do {
-        cout << "Item (use - for spaces): ";
-        getline(cin, item);
-        if (item.find(' ') != string::npos)
-            cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-    } while (item.find(' ') != string::npos);
+    {
+        string tmp;
+        do {
+            cout << "Item name: ";
+            getline(cin, tmp);
+            bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+            bool hasCtrl = false;
+            for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+            if (onlySpaces)
+                cout << "Item name cannot be empty.\n";
+            else if (hasCtrl)
+                cout << "Invalid input: please avoid control characters.\n";
+            else
+                break;
+        } while (true);
+        item = tmp;
+    }
     double amt;
     while (true) {
         cout << "Amount: ";
@@ -230,49 +301,108 @@ void updateCustomerInfo(map<int, AllCustomers>& customerList) {
         fieldChoice = readIntInRange("Enter choice: ", 0, 7);
         switch (fieldChoice) {
             case 1: {
-                string v;
+                string tmp;
                 do {
-                    cout << "New first name: "; getline(cin, v);
-                    if (v.find(' ') != string::npos)
+                    cout << "New first name: ";
+                    getline(cin, tmp);
+                    bool hasSpace = tmp.find(' ') != string::npos;
+                    bool empty = tmp.empty();
+                    bool hasCtrl = false;
+                    for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+                    if (empty)
+                        cout << "First name cannot be empty.\n";
+                    else if (hasSpace)
                         cout << "Invalid input: spaces not allowed.\n";
-                } while (v.find(' ') != string::npos);
-                c.setFirstName(v); break;
+                    else if (hasCtrl)
+                        cout << "Invalid input: please avoid control characters.\n";
+                    else
+                        break;
+                } while (true);
+                c.setFirstName(tmp);
+                break;
             }
             case 2: {
-                string v;
+                string tmp;
                 do {
-                    cout << "New last name: "; getline(cin, v);
-                    if (v.find(' ') != string::npos)
+                    cout << "New last name: ";
+                    getline(cin, tmp);
+                    bool hasSpace = tmp.find(' ') != string::npos;
+                    bool empty = tmp.empty();
+                    bool hasCtrl = false;
+                    for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+                    if (empty)
+                        cout << "Last name cannot be empty.\n";
+                    else if (hasSpace)
                         cout << "Invalid input: spaces not allowed.\n";
-                } while (v.find(' ') != string::npos);
-                c.setLastName(v); break;
+                    else if (hasCtrl)
+                        cout << "Invalid input: please avoid control characters.\n";
+                    else
+                        break;
+                } while (true);
+                c.setLastName(tmp);
+                break;
             }
             case 3: {
-                // Street address validation
                 string v;
-                do {
-                    cout << "New street address (use - for spaces): "; getline(cin, v);
-                    if (v.find(' ') != string::npos)
-                        cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-                } while (v.find(' ') != string::npos);
+                {
+                    string tmp;
+                    do {
+                        cout << "New street address: ";
+                        getline(cin, tmp);
+                        bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+                        bool hasCtrl = false;
+                        for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+                        if (onlySpaces)
+                            cout << "Street address cannot be empty.\n";
+                        else if (hasCtrl)
+                            cout << "Invalid input: please avoid control characters.\n";
+                        else
+                            break;
+                    } while (true);
+                    v = tmp;
+                }
                 c.setStreetAddress(v); break;
             }
             case 4: {
                 string v;
-                do {
-                    cout << "New city (use - for spaces): "; getline(cin, v);
-                    if (v.find(' ') != string::npos)
-                        cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-                } while (v.find(' ') != string::npos);
+                {
+                    string tmp;
+                    do {
+                        cout << "New city: ";
+                        getline(cin, tmp);
+                        bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+                        bool hasCtrl = false;
+                        for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+                        if (onlySpaces)
+                            cout << "City cannot be empty.\n";
+                        else if (hasCtrl)
+                            cout << "Invalid input: please avoid control characters.\n";
+                        else
+                            break;
+                    } while (true);
+                    v = tmp;
+                }
                 c.setCity(v); break;
             }
             case 5: {
                 string v;
-                do {
-                    cout << "New state (use - for spaces): "; getline(cin, v);
-                    if (v.find(' ') != string::npos)
-                        cout << "Invalid input: spaces not allowed, use '-' instead.\n";
-                } while (v.find(' ') != string::npos);
+                {
+                    string tmp;
+                    do {
+                        cout << "New state: ";
+                        getline(cin, tmp);
+                        bool onlySpaces = tmp.find_first_not_of(' ') == string::npos;
+                        bool hasCtrl = false;
+                        for (char c : tmp) if (static_cast<unsigned char>(c) < 32) { hasCtrl = true; break; }
+                        if (onlySpaces)
+                            cout << "State cannot be empty.\n";
+                        else if (hasCtrl)
+                            cout << "Invalid input: please avoid control characters.\n";
+                        else
+                            break;
+                    } while (true);
+                    v = tmp;
+                }
                 c.setState(v); break;
             }
             case 6: {
@@ -345,14 +475,42 @@ int main () {
         return 1;
     }
 
-    while (getline(AllCustomersData, line)) {
-        AllCustomers Customer(line);
-        customerList[Customer.getAccountNumber()] = Customer;
+    // New multi-line customer reader
+    string firstName, lastName, street, city, state, zip, phone, acctStr;
+    while (getline(AllCustomersData, firstName)) {
+        if (!getline(AllCustomersData, lastName)) break;
+        if (!getline(AllCustomersData, acctStr)) break;
+        if (!getline(AllCustomersData, street)) break;
+        if (!getline(AllCustomersData, city)) break;
+        if (!getline(AllCustomersData, state)) break;
+        if (!getline(AllCustomersData, zip)) break;
+        if (!getline(AllCustomersData, phone)) break;
+        AllCustomers Customer;
+        Customer.setFirstName(firstName);
+        Customer.setLastName(lastName);
+        int acctNum = stoi(acctStr);
+        Customer.setAccountNumber(acctNum);
+        Customer.setStreetAddress(street);
+        Customer.setCity(city);
+        Customer.setState(state);
+        Customer.setZipCode(zip);
+        Customer.setPhoneNumber(phone);
+        customerList[acctNum] = Customer;
     }
-
-    while(getline(AllPurchasesData, line)) {
-        AllPurchases Purchase(line);
-        customerList[Purchase.getAccountNumber()].addPurchase(Purchase);
+  
+    string pAcctStr, pItem, pDate, pAmtStr;
+    while (getline(AllPurchasesData, pAcctStr)) {
+        if (!getline(AllPurchasesData, pItem)) break;
+        if (!getline(AllPurchasesData, pDate)) break;
+        if (!getline(AllPurchasesData, pAmtStr)) break;
+        int acctNum = stoi(pAcctStr);
+        double amt = stod(pAmtStr);
+        AllPurchases P;
+        P.setAccountNumber(acctNum);
+        P.setItem(pItem);
+        P.setDate(pDate);
+        P.setAmmount(amt);
+        customerList[acctNum].addPurchase(P);
     }
 
     int input;
@@ -516,13 +674,13 @@ int main () {
                             }
                             for (auto& kv : customerList) {
                                 auto& c = kv.second;
-                                outCust << c.getFirstName() << " "
-                                        << c.getLastName() << " "
-                                        << c.getAccountNumber() << " "
-                                        << c.getStreetAddress() << " "
-                                        << c.getCity() << " "
-                                        << c.getState() << " "
-                                        << c.getZipCode() << " "
+                                outCust << c.getFirstName() << "\n"
+                                        << c.getLastName() << "\n"
+                                        << c.getAccountNumber() << "\n"
+                                        << c.getStreetAddress() << "\n"
+                                        << c.getCity() << "\n"
+                                        << c.getState() << "\n"
+                                        << c.getZipCode() << "\n"
                                         << c.getPhoneNumber() << "\n";
                             }
                             outCust.close();
@@ -533,9 +691,9 @@ int main () {
                             }
                             for (auto& kv : customerList) {
                                 for (auto& p : kv.second.getPurchases()) {
-                                    outPur << p.getAccountNumber() << " "
-                                           << p.getItem() << " "
-                                           << p.getDate() << " "
+                                    outPur << p.getAccountNumber() << "\n"
+                                           << p.getItem() << "\n"
+                                           << p.getDate() << "\n"
                                            << p.getAmmount() << "\n";
                                 }
                             }
@@ -558,13 +716,13 @@ int main () {
                             }
                             for (auto& kv : customerList) {
                                 auto& c = kv.second;
-                                outCust2 << c.getFirstName() << " "
-                                         << c.getLastName() << " "
-                                         << c.getAccountNumber() << " "
-                                         << c.getStreetAddress() << " "
-                                         << c.getCity() << " "
-                                         << c.getState() << " "
-                                         << c.getZipCode() << " "
+                                outCust2 << c.getFirstName() << "\n"
+                                         << c.getLastName() << "\n"
+                                         << c.getAccountNumber() << "\n"
+                                         << c.getStreetAddress() << "\n"
+                                         << c.getCity() << "\n"
+                                         << c.getState() << "\n"
+                                         << c.getZipCode() << "\n"
                                          << c.getPhoneNumber() << "\n";
                             }
                             outCust2.close();
@@ -575,9 +733,9 @@ int main () {
                             }
                             for (auto& kv : customerList) {
                                 for (auto& p : kv.second.getPurchases()) {
-                                    outPur2 << p.getAccountNumber() << " "
-                                            << p.getItem() << " "
-                                            << p.getDate() << " "
+                                    outPur2 << p.getAccountNumber() << "\n"
+                                            << p.getItem() << "\n"
+                                            << p.getDate() << "\n"
                                             << p.getAmmount() << "\n";
                                 }
                             }
