@@ -52,8 +52,7 @@ void printAllCustomers(const map<int, AllCustomers>& customerList) {
 }
 
 template<typename Compare>
-void sortAndPrintCustomers(const map<int, AllCustomers>& customerList,
-                           Compare comp)
+void sortAndPrintCustomers(const map<int, AllCustomers>& customerList, Compare comp)
 {
     // 1) Gather pointers to each customer
     vector<const AllCustomers*> roster;
@@ -244,7 +243,7 @@ void addPurchasesRecursive(int count, AllCustomers& cust) {
         if (!isValidDate(date)) cout << "Invalid date. Please enter a valid date (m/d/YY).\n";
     } while (!isValidDate(date));
     string item;
-    {
+    { 
         string tmp;
         do {
             cout << "Item name: ";
